@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방명록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-image:url("pexels-zen-chung-5749818.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input, textarea, button {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        button {
+            background-color: #107cbb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .guestbook-entry {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>방명록</h1>
+    <form id="guestbookForm">
+        <input type="text" id="nameInput" placeholder="이름" required>
+        <textarea id="messageInput" placeholder="메시지" required></textarea>
+        <button type="submit">작성</button>
+    </form>
+    <div id="guestbookEntries">
+        <!-- 방명록 내용이 표시될 곳 -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const guestbookForm = document.getElementById("guestbookForm");
+            const guestbookEntries = document.getElementById("guestbookEntries");
+            const maxEntries = 20; // 최대 방명록 개수
+
+            guestbookForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const nameInput = document.getElementById("nameInput");
+                const messageInput = document.getElementById("messageInput");
+
+                const name = nameInput.value;
+                const message = messageInput.value;
+
+                if (!name || !message) {
+                    alert("이름과 메시지를 모두 입력해주세요.");
+                    return;
+                }
+
+                const entry = document.createElement("div");
+                entry.classList.add("guestbook-entry");
+                entry.innerHTML = `<strong>${name}:</strong> ${message}`;
+
+                guestbookEntries.insertBefore(entry, guestbookEntries.firstChild);
+
+                // 방명록 개수가 최대 개수를 초과하면 가장 오래된 방명록 삭제
+                if (guestbookEntries.children.length > maxEntries) {
+                    guestbookEntries.removeChild(guestbookEntries.lastChild);
+                }
+
+                nameInput.value = "";
+                messageInput.value = "";
+            });
+        });
+    </script>
+</body>
+</html>
